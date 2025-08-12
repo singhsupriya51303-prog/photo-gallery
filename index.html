@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Happy Birthday sir | Special Tribute</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Reset & base */
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box; 
+    }
+    
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color:#fff; 
+      overflow-x:hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    a { color: inherit; text-decoration: none; }
+    
+    /* Floating particles background */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .particle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      animation: float 15s infinite linear;
+      opacity: 0.7;
+    }
+    
+    /* Shared container */
+    .section {
+      min-height:100vh;
+      display:flex; 
+      align-items:center; 
+      justify-content:center;
+      padding:2rem; 
+      text-align:center;
+      position: relative;
+    }
+    
+    /* Floating nav dots */
+    .navbar {
+      position:fixed; 
+      bottom:2rem; 
+      left:50%; 
+      transform:translateX(-50%);
+      display:flex; 
+      gap:1.5rem;
+      background:rgba(255,255,255,0.1); 
+      backdrop-filter:blur(8px);
+      padding:0.8rem 1.5rem; 
+      border-radius:9999px;
+      box-shadow:0 4px 20px rgba(0,0,0,0.3);
+      z-index: 100;
+    }
+    
+    .navbar a {
+      width:1rem; 
+      height:1rem; 
+      border-radius:50%;
+      background:rgba(255,255,255,0.3);
+      transition:transform .3s, background .3s;
+      position: relative;
+    }
+    
+    .navbar a:hover::before {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+    
+    .navbar a.active {
+      background:linear-gradient(90deg,#ff6b6b,#4ecdc4,#45b7d1);
+      transform:scale(1.3);
+      box-shadow: 0 0 10px rgba(255,255,255,0.5);
+    }
+    
+    /* Keyframes */
+    @keyframes pop {
+      0%,100% { transform:scale(1) rotate(0); }
+      50%     { transform:scale(1.15) rotate(5deg); }
+    }
+    
+    @keyframes fadeInUp {
+      0%  { transform:translateY(30px); opacity:0; }
+      100%{ transform:translateY(0);    opacity:1; }
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+      100% { transform: translateY(0px) rotate(360deg); }
+    }
+    
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      25% { transform: scale(1.1); }
+      50% { transform: scale(1); }
+      75% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes shine {
+      0% { background-position: -100px; }
+      100% { background-position: 200px; }
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(255, 107, 107, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+    }
+    
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Welcome page */
+    #welcome .emoji {
+      font-size:10rem; 
+      animation:pop 4s ease-in-out infinite, heartbeat 2s ease-in-out infinite 2s;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+      margin-bottom: 2rem;
+    }
+    
+    #welcome h1 {
+      font-size:4rem;
+      background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #ff6b6b);
+      background-size: 300% 300%;
+      -webkit-background-clip: text; 
+      background-clip: text; 
+      color:transparent;
+      opacity:0; 
+      animation:fadeInUp .6s ease-out .3s forwards, gradient 8s ease infinite;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 1.5rem;
+    }
+    
+    #welcome p {
+      margin:1.5rem 0;
+      font-size: 1.5rem;
+      max-width: 800px;
+      line-height: 1.6;
+      opacity:0; 
+      animation:fadeInUp .6s ease-out .5s forwards;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .highlight {
+      color: #ffd166;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(255, 209, 102, 0.7);
+    }
+    
+    #startBtn {
+      padding:1.2rem 3rem; 
+      font-size:1.3rem; 
+      border:none; 
+      border-radius:9999px;
+      background: linear-gradient(90deg,#ff6b6b,#4ecdc4,#45b7d1);
+      background-size: 200% 200%;
+      color:#fff; 
+      cursor:pointer; 
+      position:relative; 
+      overflow:hidden;
+      display:inline-flex; 
+      align-items:center; 
+      gap:.8rem;
+      opacity:0; 
+      animation:fadeInUp .6s ease-out .7s forwards, pulse 2s infinite 3s;
+      font-weight: 600;
+      letter-spacing: 1px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
+      z-index: 10;
+    }
+    
+    #startBtn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(78, 205, 196, 0.6);
+      animation: none;
+    }
+    
+    #startBtn:after {
+      content:""; 
+      position:absolute; 
+      inset:0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transform:translateX(-100%); 
+      transition:transform .7s;
+    }
+    
+    #startBtn:hover:after { 
+      transform:translateX(100%); 
+    }
+    
+    #startBtn svg { 
+      width:1.5rem; 
+      height:1.5rem; 
+      flex-shrink:0; 
+      animation: heartbeat 1.5s infinite;
+    }
+    
+    .emoji-hearts {
+      margin-top:3rem; 
+      font-size:2.5rem;
+      opacity:0; 
+      animation:fadeInUp .5s ease-out .9s forwards;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    
+    .emoji-hearts span {
+      display: inline-block;
+      animation: float 6s ease-in-out infinite;
+      animation-delay: calc(var(--i) * 0.2s);
+    }
+    
+    /* Floating elements */
+    .floating-elements {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .floating-element {
+      position: absolute;
+      font-size: 2rem;
+      opacity: 0.7;
+      animation: float 15s infinite linear;
+    }
+    
+    /* Audio controls */
+    .audio-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 100;
+    }
+    
+    .audio-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: all 0.3s;
+    }
+    
+    .audio-btn:hover {
+      background: rgba(255,255,255,0.2);
+      transform: scale(1.1);
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      #welcome h1 {
+        font-size: 2.5rem;
+      }
+      
+      #welcome p {
+        font-size: 1.2rem;
+      }
+      
+      #startBtn {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+      }
+      
+      .navbar {
+        gap: 1rem;
+        padding: 0.6rem 1.2rem;
+      }
+      
+      .navbar a {
+        width: 0.8rem;
+        height: 0.8rem;
+      }
+    }
+    
+    /* Confetti effect */
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+      display: none;
+    }
+    
+    .confetti-piece {
+      position: absolute;
+      width: 10px;
+      height: 20px;
+      background: #ffd700;
+      opacity: 0;
+      animation: confetti-fall 5s linear forwards;
+    }
+    
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    /* Spotlight effect */
+    .spotlight {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+  </style>
+</head>
+
+<body id="welcome">
+  <!-- Background particles -->
+  <div class="particles" id="particles"></div>
+  
+  <!-- Floating elements -->
+  <div class="floating-elements" id="floating-elements"></div>
+  
+  <!-- Spotlight effect -->
+  <div class="spotlight" id="spotlight"></div>
+  
+  <!-- Audio controls -->
+  <div class="audio-controls">
+    <div class="audio-btn" id="playBtn">
+      <i class="fas fa-play"></i>
+    </div>
+    <div class="audio-btn" id="pauseBtn">
+      <i class="fas fa-pause"></i>
+    </div>
+    <div class="audio-btn" id="volumeBtn">
+      <i class="fas fa-volume-up"></i>
+    </div>
+  </div>
+  
+  <section class="section">
+    <div>
+      <!-- Animated emoji -->
+      <div class="emoji"> 
+        <span class="highlight">🎉</span>
+        <span class="highlight">🎂</span>
+        <span class="highlight">🎈</span>
+        <span class="highlight">🎁</span>
+      </div>
+
+      <!-- Title -->
+      <h1>Happy Birth day</h1>
+
+      <!-- Subtitle -->
+      <p>
+        Thank you for being my <span class="highlight">hero</span>, my <span class="highlight">guide</span>, and my <span class="highlight">biggest supporter</span>.<br>
+        <span style="display:block; margin-top:1.5rem;">
+          This is a special tribute to show how much you mean to me.
+        </span>
+      </p>
+
+      <!-- Hidden audio -->
+      <audio id="bgAudio" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-happy-times-158.mp3" type="audio/mp3">
+      </audio>
+
+      <!-- Start button -->
+      <button id="startBtn">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.418 4.418 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.582 3 22 5.418 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        Start the Journey
+      </button>
+
+      <!-- Floating hearts -->
+      <div class="emoji-hearts">
+        <span style="--i:0">💖</span>
+        <span style="--i:1">💝</span>
+        <span style="--i:2">💗</span>
+        <span style="--i:3">💓</span>
+        <span style="--i:4">💞</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Confetti container -->
+  <div class="confetti" id="confetti"></div>
+
+  <!-- Navigation dots -->
+  <div class="navbar">
+    <a href="index.html" class="active" data-tooltip="Home"></a>
+    <a href="photo-gallery.html" data-tooltip="Gallery"></a>
+    <a href="letter.html" data-tooltip="Letter"></a>
+    <a href="final.html" data-tooltip="Surprise"></a>
+  </div>
+
+  <script>
+    // Create background particles
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 100;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Random size and position
+        const size = Math.random() * 3 + 1;
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const delay = Math.random() * 15;
+        const duration = 10 + Math.random() * 20;
+        
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${posX}%`;
+        particle.style.top = `${posY}%`;
+        particle.style.animationDelay = `${delay}s`;
+        particle.style.animationDuration = `${duration}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+    
+    // Create floating elements
+    function createFloatingElements() {
+      const container = document.getElementById('floating-elements');
+      const emojis = ['👨', '👧', '👦', '❤️', '🎁', '🏆', '🌟', '✨', '🎉'];
+      const count = 15;
+      
+      for (let i = 0; i < count; i++) {
+        const element = document.createElement('div');
+        element.classList.add('floating-element');
+        element.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        
+        // Random properties
+        const size = Math.random() * 2 + 1;
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const delay = Math.random() * 15;
+        const duration = 15 + Math.random() * 20;
+        
+        element.style.fontSize = `${size}rem`;
+        element.style.left = `${posX}%`;
+        element.style.top = `${posY}%`;
+        element.style.animationDelay = `${delay}s`;
+        element.style.animationDuration = `${duration}s`;
+        element.style.opacity = Math.random() * 0.5 + 0.3;
+        
+        container.appendChild(element);
+      }
+    }
+    
+    // Create confetti
+    function createConfetti() {
+      const confettiContainer = document.getElementById('confetti');
+      confettiContainer.style.display = 'block';
+      
+      // Clear previous confetti
+      confettiContainer.innerHTML = '';
+      
+      const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#ffd166', '#ff9f1c', '#2ec4b6'];
+      const count = 150;
+      
+      for (let i = 0; i < count; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti-piece');
+        
+        // Random properties
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const width = Math.random() * 10 + 5;
+        const height = Math.random() * 15 + 10;
+        const left = Math.random() * 100;
+        const delay = Math.random() * 5;
+        const duration = 2 + Math.random() * 3;
+        
+        confetti.style.width = `${width}px`;
+        confetti.style.height = `${height}px`;
+        confetti.style.left = `${left}%`;
+        confetti.style.background = color;
+        confetti.style.animationDelay = `${delay}s`;
+        confetti.style.animationDuration = `${duration}s`;
+        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+        
+        confettiContainer.appendChild(confetti);
+      }
+      
+      // Hide confetti after animation
+      setTimeout(() => {
+        confettiContainer.style.display = 'none';
+      }, 5000);
+    }
+    
+    // Spotlight effect
+    function setupSpotlight() {
+      const spotlight = document.getElementById('spotlight');
+      document.addEventListener('mousemove', (e) => {
+        spotlight.style.left = `${e.clientX - 100}px`;
+        spotlight.style.top = `${e.clientY - 100}px`;
+      });
+    }
+    
+    // Audio controls
+    function setupAudioControls() {
+      const audio = document.getElementById('bgAudio');
+      const playBtn = document.getElementById('playBtn');
+      const pauseBtn = document.getElementById('pauseBtn');
+      const volumeBtn = document.getElementById('volumeBtn');
+      
+      playBtn.addEventListener('click', () => {
+        audio.play();
+        playBtn.style.display = 'none';
+        pauseBtn.style.display = 'flex';
+      });
+      
+      pauseBtn.addEventListener('click', () => {
+        audio.pause();
+        pauseBtn.style.display = 'none';
+        playBtn.style.display = 'flex';
+      });
+      
+      // Start with pause button hidden
+      pauseBtn.style.display = 'none';
+    }
+    
+    // Highlight current nav dot
+    document.querySelectorAll('.navbar a').forEach(a => {
+      if (a.href === location.href) a.classList.add('active');
+    });
+    
+    // Play music and show confetti on button click
+    document.getElementById('startBtn').addEventListener('click', () => {
+      const audio = document.getElementById('bgAudio');
+      audio.play();
+      
+      // Show confetti
+      createConfetti();
+      
+      // Update audio controls
+      document.getElementById('playBtn').style.display = 'none';
+      document.getElementById('pauseBtn').style.display = 'flex';
+      
+      // Button animation
+      const btn = document.getElementById('startBtn');
+      btn.style.animation = 'pulse 0.5s ease';
+      setTimeout(() => {
+        btn.style.animation = '';
+      }, 500);
+    });
+    
+    // Initialize effects
+    window.addEventListener('load', () => {
+      createParticles();
+      createFloatingElements();
+      setupSpotlight();
+      setupAudioControls();
+    });
+  </script>
+</body>
+</html>

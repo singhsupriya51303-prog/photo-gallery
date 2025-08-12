@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Our Beautiful Memories | Father's Day</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Reset & base */
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box; 
+    }
+    
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color:#fff; 
+      overflow-x:hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    a { color: inherit; text-decoration: none; }
+    
+    /* Floating hearts background */
+    .floating-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .heart {
+      position: absolute;
+      color: rgba(255, 107, 107, 0.3);
+      font-size: 1.5rem;
+      animation: float 15s infinite linear;
+      opacity: 0.7;
+    }
+    
+    /* Container */
+    .section { 
+      min-height:100vh; 
+      display:flex; 
+      flex-direction: column;
+      align-items:center; 
+      justify-content:center; 
+      padding:2rem; 
+      position: relative;
+      z-index: 10;
+    }
+    
+    /* Floating nav dots */
+    .navbar {
+      position:fixed; 
+      bottom:2rem; 
+      left:50%; 
+      transform:translateX(-50%);
+      display:flex; 
+      gap:1.5rem;
+      background:rgba(255,255,255,0.1); 
+      backdrop-filter:blur(8px);
+      padding:0.8rem 1.5rem; 
+      border-radius:9999px;
+      box-shadow:0 4px 20px rgba(0,0,0,0.3);
+      z-index: 100;
+    }
+    
+    .navbar a {
+      width:1rem; 
+      height:1rem; 
+      border-radius:50%;
+      background:rgba(255,255,255,0.3);
+      transition:transform .3s, background .3s;
+      position: relative;
+    }
+    
+    .navbar a:hover::before {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+    
+    .navbar a.active {
+      background:linear-gradient(90deg,#ffcd3c,#ff6b6b);
+      transform:scale(1.3);
+      box-shadow: 0 0 10px rgba(255,255,255,0.5);
+    }
+    
+    /* Keyframes */
+    @keyframes fadeInUp {
+      0%  { transform:translateY(30px); opacity:0; }
+      100%{ transform:translateY(0);    opacity:1; }
+    }
+    
+    @keyframes pop {
+      0%,100% { transform:scale(1) rotate(0); }
+      50%     { transform:scale(1.15) rotate(5deg); }
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+      100% { transform: translateY(0px) rotate(360deg); }
+    }
+    
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      25% { transform: scale(1.1); }
+      50% { transform: scale(1); }
+      75% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes photoBorder {
+      0% { box-shadow: 0 0 0 0px rgba(255, 205, 60, 0.8); }
+      50% { box-shadow: 0 0 0 10px rgba(255, 205, 60, 0.4); }
+      100% { box-shadow: 0 0 0 0px rgba(255, 205, 60, 0.8); }
+    }
+    
+    /* Page heading */
+    h2 {
+      font-size: 3.2rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(90deg, #ffcd3c, #ff6b6b, #ffcd3c);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      opacity: 0;
+      animation: fadeInUp .6s ease-out .2s forwards, gradient 8s ease infinite;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    
+    p.subtitle {
+      color: #ffd166;
+      font-size: 1.4rem;
+      margin-bottom: 2.5rem;
+      max-width: 700px;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeInUp .6s ease-out .4s forwards;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    
+    /* Slides */
+    .slider {
+      position:relative; 
+      width:320px; 
+      height:420px; 
+      margin:0 auto 2rem;
+      perspective:1000px;
+    }
+    
+    .slide {
+      position:absolute; 
+      top:0; 
+      left:0; 
+      width:100%; 
+      height:100%;
+      border-radius:1rem; 
+      overflow:hidden; 
+      backface-visibility:hidden;
+      box-shadow:0 15px 35px rgba(0,0,0,0.5);
+      transform-style:preserve-3d;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: photoBorder 4s infinite;
+      cursor: pointer;
+      z-index: 1;
+    }
+    
+    .slide.active {
+      opacity:1; 
+      transform: translateZ(0) rotate(0) scale(1);
+      z-index: 3;
+    }
+    
+    .slide.prev {
+      opacity:0.8; 
+      transform: translateX(-80%) rotateY(15deg) translateZ(-80px) scale(0.9);
+      z-index: 2;
+    }
+    
+    .slide.next {
+      opacity:0.8; 
+      transform: translateX(80%) rotateY(-15deg) translateZ(-80px) scale(0.9);
+      z-index: 2;
+    }
+    
+    .slide img {
+      width:100%; 
+      height:80%; 
+      object-fit:cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .slide:hover img {
+      transform: scale(1.05);
+    }
+    
+    .slide .caption {
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      color:#fff; 
+      padding:1.2rem; 
+      font-size:1.1rem;
+      position:absolute; 
+      bottom:0; 
+      width:100%; 
+      text-align:center;
+      font-weight: 500;
+      transform: translateY(100%);
+      transition: transform 0.4s ease;
+      backdrop-filter: blur(3px);
+    }
+    
+    .slide:hover .caption {
+      transform: translateY(0);
+    }
+    
+    /* Camera emoji */
+    .emoji {
+      font-size: 3.5rem;
+      opacity: 0;
+      animation: pop 3s ease-in-out infinite 1s, fadeInUp .5s ease-out 1s forwards;
+      margin-top: 2rem;
+      text-shadow: 0 0 20px rgba(255, 205, 60, 0.8);
+      color: #ffcd3c;
+    }
+    
+    /* Navigation buttons */
+    .nav-dots {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .dot.active {
+      background: linear-gradient(90deg,#ffcd3c,#ff6b6b);
+      transform: scale(1.3);
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      h2 {
+        font-size: 2.5rem;
+      }
+      
+      p.subtitle {
+        font-size: 1.1rem;
+      }
+      
+      .slider {
+        width: 280px;
+        height: 370px;
+      }
+    }
+    
+    /* Spotlight effect */
+    .spotlight {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.5;
+    }
+    
+    /* Photo counter */
+    .photo-counter {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      padding: 6px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating hearts background -->
+  <div class="floating-hearts" id="floating-hearts"></div>
+  
+  <!-- Spotlight effect -->
+  <div class="spotlight" id="spotlight"></div>
+  
+  <section class="section">
+    <div>
+      <h2>Our Beautiful Memories</h2>
+      <p class="subtitle">Every moment with you is a treasure that I hold close to my heart.</p>
+
+      <div class="slider" id="slider">
+        <div class="slide active">
+          <img src="c:\Users\supri\AppData\Local\Packages\5319275A.WhatsAppDesktop_cv1g1gvanyjgm\TempState\6FD9A99A5ABED788D9AFC9D52D54E91B\WhatsApp Image 2025-08-13 at 00.56.42_0156dfb5.jpg" alt="teacher and student">
+          <div class="caption">Our first adventure together</div>
+        </div>
+        <div class="slide next">
+          <img src="c:\Users\supri\AppData\Local\Packages\5319275A.WhatsAppDesktop_cv1g1gvanyjgm\TempState\5FC34ED307AAC159A30D81181C99847E\WhatsApp Image 2025-08-13 at 00.56.46_e295af3d.jpg" alt="Teaching bike">
+          <div class="caption">Teaching me to ride a bike</div>
+        </div>
+        <div class="slide">
+          <img src="c:\Users\supri\AppData\Local\Packages\5319275A.WhatsAppDesktop_cv1g1gvanyjgm\TempState\F9322B146574D9DA9AD32AD879AD373B\WhatsApp Image 2025-08-13 at 00.56.47_52d532f5.jpg" alt="Family vacation">
+          <div class="caption"> memories</div>
+        </div>
+        <div class="slide prev">
+          <img src="c:\Users\supri\AppData\Local\Packages\5319275A.WhatsAppDesktop_cv1g1gvanyjgm\TempState\D6AE00D77468471C0FBA3A53A0273891\WhatsApp Image 2025-08-13 at 00.56.49_0ed466b1.jpg" alt="Graduation day">
+          <div class="caption">enjoyment</div>
+        </div>
+        <div class="slide prev">
+          <img src="c:\Users\supri\AppData\Local\Packages\5319275A.WhatsAppDesktop_cv1g1gvanyjgm\TempState\2AEC405D4B5959235C49EC1D78EDB0C2\WhatsApp Image 2025-08-13 at 00.56.50_3ac4aa1c.jpg" alt="Graduation day">
+          <div class="caption">Graduation day pride</div>
+      </div>
+      
+      <div class="photo-counter" id="photoCounter">1/4</div>
+      
+      <div class="nav-dots" id="navDots"></div>
+
+      <div class="emoji">📸</div>
+    </div>
+  </section>
+
+  <div class="navbar">
+    <a href="index.html" data-tooltip="Home"></a>
+    <a href="photo-gallery.html" class="active" data-tooltip="Gallery"></a>
+    <a href="letter.html" data-tooltip="Letter"></a>
+    <a href="final.html" data-tooltip="Surprise"></a>
+  </div>
+
+  <script>
+    // Create floating hearts background
+    function createFloatingHearts() {
+      const container = document.getElementById('floating-hearts');
+      const heartCount = 20;
+      
+      for (let i = 0; i < heartCount; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '❤';
+        
+        // Random properties
+        const size = Math.random() * 1.5 + 0.8;
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const delay = Math.random() * 15;
+        const duration = 15 + Math.random() * 20;
+        
+        heart.style.fontSize = `${size}rem`;
+        heart.style.left = `${posX}%`;
+        heart.style.top = `${posY}%`;
+        heart.style.animationDelay = `${delay}s`;
+        heart.style.animationDuration = `${duration}s`;
+        heart.style.opacity = Math.random() * 0.5 + 0.3;
+        heart.style.color = `rgba(255, ${Math.floor(Math.random() * 100 + 100)}, ${Math.floor(Math.random() * 100 + 100)}, ${Math.random() * 0.4 + 0.3})`;
+        
+        container.appendChild(heart);
+      }
+    }
+    
+    // Spotlight effect
+    function setupSpotlight() {
+      const spotlight = document.getElementById('spotlight');
+      document.addEventListener('mousemove', (e) => {
+        spotlight.style.left = `${e.clientX - 100}px`;
+        spotlight.style.top = `${e.clientY - 100}px`;
+      });
+    }
+    
+    // Create navigation dots
+    function createNavDots() {
+      const navDots = document.getElementById('navDots');
+      const slides = document.querySelectorAll('.slide');
+      
+      slides.forEach((slide, index) => {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        if (index === 0) dot.classList.add('active');
+        
+        dot.addEventListener('click', () => {
+          goToSlide(index);
+        });
+        
+        navDots.appendChild(dot);
+      });
+    }
+    
+    // Highlight current nav dot
+    document.querySelectorAll('.navbar a').forEach(a => {
+      if (a.href === location.href) a.classList.add('active');
+    });
+    
+    // Carousel functionality
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    const photoCounter = document.getElementById('photoCounter');
+    let idx = 0;
+    const total = slides.length;
+    
+    function goToSlide(index) {
+      idx = index;
+      updateSlides();
+    }
+    
+    function updateSlides() {
+      slides.forEach((s, i) => {
+        s.classList.remove('prev','active','next');
+        if (i === idx) s.classList.add('active');
+        else if (i === (idx+1)%total) s.classList.add('next');
+        else if (i === (idx-1+total)%total) s.classList.add('prev');
+      });
+      
+      // Update dots
+      dots.forEach((dot, i) => {
+        dot.classList.remove('active');
+        if (i === idx) dot.classList.add('active');
+      });
+      
+      // Update counter
+      photoCounter.textContent = `${idx + 1}/${total}`;
+    }
+    
+    // Auto rotation
+    setInterval(() => {
+      idx = (idx+1) % total;
+      updateSlides();
+    }, 5000);
+    
+    // Initialize effects
+    window.addEventListener('load', () => {
+      createFloatingHearts();
+      setupSpotlight();
+      createNavDots();
+      updateSlides();
+    });
+  </script>
+</body>
+</html>
